@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Каталог памятников</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 900px; margin: 20px auto; padding: 0 10px; }
+    .product { border: 1px solid #ddd; padding: 16px; margin: 16px 0; border-radius: 8px; background: #fff; }
+    h2 { text-align: center; }
+    label { display: block; margin: 12px 0 6px; font-weight: bold; }
+    select, .price-box {
+      width: 100%; padding: 8px; margin: 4px 0; border: 1px solid #ccc; border-radius: 4px;
+    }
+    .price-box {
+      background: #e8f5e9; font-weight: bold; text-align: center; font-size: 18px; color: #2e7d32;
+    }
+  </style>
+</head>
+<body>
+  <h2>Каталог памятников</h2>
+  <div id="catalog">Загрузка...</div>
+
+  <script>
+    // Загружаем товары из JSON-файла
+    fetch('products.json')
+      .then(response => response.json())
+      .then(PRODUCTS => {
+        let html = '';
+        PRODUCTS.forEach(p => {
+          html += `
+            <div class="product" data-id="${p.id}">
+              <h3>${p.id} — ${p.name}</h3>
+              <label>Размер:</label>
+              <select class="sel-size" onchange="updateTumby(this)"></select>
+              <label>Тумба:</label>
+              <select class="sel-tumba" onchange="recalculatePrice('${p.id}')"></select>
+              <label>Цветник:</label>
+              <select class="sel-flower" onchange="recalculatePrice('${p.id}')"></select>
+              <label>Портреты:</label>
+              <select class="sel-portrait" onchange="recalculatePrice('${p.id}')"></select>
+              <label>ФИО + дата:</label>
+              <select class="sel-text" onchange="recalculatePrice('${p.id}')"></select>
+              <div class="price-box" id="price-${p.id}">Выберите параметры</div>
+            </div>
+          `;
+        });
+        document.getElementById('catalog').innerHTML = html;
+
+        // Инициализация списков
+        PRODUCTS.forEach(p => {
+          const div = document.querySelector(`[data-id="${p.id}"]`);
+          if (!div) return;
+          
+          const sizeSelect = div.querySelector('.sel-size');
+          sizeSelect.innerHTML = '<option value="">–</option>';
+          Object.keys(p.sizesBases).forEach(size => {
+            const opt = document.createElement('option');
+            opt.value = size;
+            opt.textContent = size;
+            sizeSelect.appendChild(opt);
+          });
+          
+          const flowerSelect = div.querySelector('.sel-flower');
+          flowerSelect.innerHTML = '<option value="">Без цветника</option>';
+          p.flowerbeds.forEach(opt => {
+            const el = document.createElement('option');
+            el.value = JSON.stringify(opt);
+            el.textContent = opt.описание + ' (+' + opt.доплата.toLocaleString() + ' ₽)';
+            flowerSelect.appendChild(el);
+          });
+          
+          const portraitSelect = div.querySelector('.sel-portrait');
+          portraitSelect.innerHTML = '<option value="">Без портретов</option>';
+          p.portraits.forEach(opt => {
+            const el = document.createElement('option');
+            el.value = JSON.stringify(opt);
+            el.textContent = opt.описание + ' (+' + opt.доплата.toLocaleString() + ' ₽)';
+            portraitSelect.appendChild(el);
+          });
+          
+          const textSelect = div.querySelector('.sel-text');
+          textSelect.innerHTML = '<option value="">Без надписей</option>';
+          p.texts.forEach(opt => {
+            const el = document.createElement('option');
+            el.value = JSON.stringify(opt);
+            el.textContent = opt.описание + ' (+' + opt.доплата.toLocaleString() + ' ₽)';
+            textSelect.appendChild(el);
+          });
+        });
+      })
+      .catch(err => {
+        document.getElementById('catalog').innerHTML = '<p>Ошибка загрузки каталога</p>';
+        console.error(err);
+      });
+
+    // === ФУНКЦИИ ЛОГИКИ ===
+    function updateTumby(sizeSelect) {
+      const productDiv = sizeSelect.closest('.product');
+      const productId = productDiv.dataset.id;
+      fetch('products.json')
+        .then(r => r.json())
+        .then(PRODUCTS => {
+          const product = PRODUCTS.find(p => p.id === productId);
+          const size = sizeSelect.value;
+          const tumbaSelect = productDiv.querySelector('.sel-tumba');
+          tumbaSelect.innerHTML = '<option value="">–</option>';
+          if (size && product.sizesBases[size]) {
+            product.sizesBases[size].forEach(opt => {
+              const optEl = document.createElement('option');
+              optEl.value = JSON.stringify({size, tumba: opt.тумба, price: opt.цена});
+              optEl.textContent = opt.тумба + ' (' + opt.цена.toLocaleString() + ' ₽)';
+              tumbaSelect.appendChild(optEl);
+            });
+          }
+          recalculatePrice(productId);
+        });
+    }
+
+    function recalculatePrice(productId) {
+      const productDiv = document.querySelector(`[data-id="${productId}"]`);
+      const tumbaVal = productDiv.querySelector('.sel-tumba').value;
+      const flowerVal = productDiv.querySelector('.sel-flower').value;
+      const portraitVal = productDiv.querySelector('.sel-portrait').value;
+      const textVal = productDiv.querySelector('.sel-text').value;
+      
+      if (!tumbaVal) {
+        document.getElementById('price-' + productId).textContent = 'Выберите параметры';
+        return;
+      }
+      
+      const base = JSON.parse(tumbaVal);
+      let total = base.price;
+      if (flowerVal) total += JSON.parse(flowerVal).доплата;
+      if (portraitVal) total += JSON.parse(portraitVal).доплата;
+      if (textVal) total += JSON.parse(textVal).доплата;
+      
+      document.getElementById('price-' + productId).textContent = 
+        'Итого: ' + total.toLocaleString() + ' ₽';
+    }
+  </script>
+</body>
+</html>
