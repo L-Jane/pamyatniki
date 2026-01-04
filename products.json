@@ -1,8 +1,8 @@
-[
+[ 
   {
     "id": "v001",
     "name": "v001",
-    "image": "https://drive.google.com/file/d/1ut7SSFegxxwD15nHX-PL7R-hw5v-BczG",
+    "image": "https://drive.google.com/file/d/1ut7SSFegxxwD15nHX-PL7R-hw5v-BczG/view?usp=sharing",
     "sizesBases": {
       "80x40x5": [
         {"тумба": "50x15x15", "цена": 15200},
@@ -73,6 +73,7 @@
     ]
   }
 ]
+
 
 
 
