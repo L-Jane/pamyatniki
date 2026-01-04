@@ -184,20 +184,22 @@
   </div>
 
   <script>
-    // === ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ ===
     let PRODUCTS = [];
     let currentProduct = null;
 
-    // === ЗАГРУЗКА ДАННЫХ ===
+    // Загрузка данных
     fetch('products.json')
       .then(response => response.json())
       .then(data => {
         PRODUCTS = data;
         const urlParams = new URLSearchParams(window.location.search);
-        const productId = urlParams.get('id');
+        let productId = urlParams.get('id');
         
+        if (!productId && PRODUCTS.length > 0) {
+          productId = PRODUCTS[0].id;
+        }
         if (!productId) {
-          document.getElementById('product-name').textContent = "Товар не найден";
+          document.getElementById('product-name').textContent = "Товары не загружены";
           return;
         }
 
@@ -214,72 +216,75 @@
         document.getElementById('product-name').textContent = "Ошибка загрузки";
       });
 
-    // === ОТОБРАЖЕНИЕ ТОВАРА ===
+    // Сортировка размеров по площади (ширина × высота)
+    function sortSizes(sizes) {
+      return sizes.sort((a, b) => {
+        const [w1, h1] = a.split('x').map(Number);
+        const [w2, h2] = b.split('x').map(Number);
+        return (w1 * h1) - (w2 * h2);
+      });
+    }
+
     function renderProduct() {
       document.getElementById('product-name').textContent = currentProduct.name;
       document.getElementById('product-art').textContent = "Артикул: " + currentProduct.id;
 
-      // Установим фото (если есть)
       if (currentProduct.image) {
         document.getElementById('product-img').src = currentProduct.image;
       } else {
-        // Заглушка — можно заменить на реальные фото позже
         document.getElementById('product-img').src = "https://via.placeholder.com/300x400?text=" + encodeURIComponent(currentProduct.name);
       }
 
-      // Заполняем размеры
+      const sizes = Object.keys(currentProduct.sizesBases);
+      if (sizes.length === 0) {
+        document.getElementById('product-price').textContent = "Нет данных";
+        return;
+      }
+
+      const sortedSizes = sortSizes(sizes);
       const sizeSelect = document.getElementById('size-select');
-      sizeSelect.innerHTML = '<option value="">-- Выберите размер --</option>';
-      Object.keys(currentProduct.sizesBases).forEach(size => {
+      sizeSelect.innerHTML = '';
+      sortedSizes.forEach(size => {
         const opt = document.createElement('option');
         opt.value = size;
         opt.textContent = size;
         sizeSelect.appendChild(opt);
       });
 
-      // Цветники
-      const flowerSelect = document.getElementById('flower-select');
-      flowerSelect.innerHTML = '<option value="">-- Без цветника --</option>';
-      currentProduct.flowerbeds.forEach(opt => {
-        const el = document.createElement('option');
-        el.value = JSON.stringify(opt);
-        el.textContent = opt.описание + ' (+' + opt.доплата.toLocaleString() + ' ₽)';
-        flowerSelect.appendChild(el);
-      });
+      // Выбираем самый маленький размер
+      const defaultSize = sortedSizes[0];
+      sizeSelect.value = defaultSize;
 
-      // Портреты
-      const portraitSelect = document.getElementById('portrait-select');
-      portraitSelect.innerHTML = '<option value="">-- Портрет --</option>';
-      currentProduct.portraits.forEach(opt => {
-        const el = document.createElement('option');
-        el.value = JSON.stringify(opt);
-        el.textContent = opt.описание + ' (+' + opt.доплата.toLocaleString() + ' ₽)';
-        portraitSelect.appendChild(el);
-      });
+      // Заполняем тумбы и выбираем первую
+      updateTumbyForSize(defaultSize);
+      const tumbaSelect = document.getElementById('tumba-select');
+      if (tumbaSelect.options.length > 0) {
+        tumbaSelect.selectedIndex = 0;
+      }
 
-      // ФИО+дата
-      const textSelect = document.getElementById('text-select');
-      textSelect.innerHTML = '<option value="">-- ФИО+Дата --</option>';
-      currentProduct.texts.forEach(opt => {
-        const el = document.createElement('option');
-        el.value = JSON.stringify(opt);
-        el.textContent = opt.описание + ' (+' + opt.доплата.toLocaleString() + ' ₽)';
-        textSelect.appendChild(el);
-      });
+      // Заполняем остальные списки (без цен в описании)
+      fillSelect('flower-select', currentProduct.flowerbeds, '-- Без цветника --');
+      fillSelect('portrait-select', currentProduct.portraits, '-- Без портрета --');
+      fillSelect('text-select', currentProduct.texts, '-- Без надписи --');
 
-      // Сбрасываем тумбу и цену
-      document.getElementById('tumba-select').innerHTML = '<option value="">-- Выберите размер --</option>';
-      document.getElementById('product-price').textContent = '— ₽';
+      // Пересчитываем цену
+      recalculatePrice();
     }
 
-    // === ЛОГИКА ВЫБОРА ===
-    function updateTumby() {
-      const sizeSelect = document.getElementById('size-select');
+    function fillSelect(selectId, options, placeholder) {
+      const select = document.getElementById(selectId);
+      select.innerHTML = `<option value="">${placeholder}</option>`;
+      options.forEach(opt => {
+        const el = document.createElement('option');
+        el.value = JSON.stringify(opt);
+        el.textContent = opt.описание; // ← только описание, без цены
+        select.appendChild(el);
+      });
+    }
+
+    function updateTumbyForSize(size) {
       const tumbaSelect = document.getElementById('tumba-select');
-      const size = sizeSelect.value;
-
-      tumbaSelect.innerHTML = '<option value="">-- Выберите тумбу --</option>';
-
+      tumbaSelect.innerHTML = '';
       if (size && currentProduct.sizesBases[size]) {
         currentProduct.sizesBases[size].forEach(opt => {
           const optEl = document.createElement('option');
@@ -288,7 +293,17 @@
           tumbaSelect.appendChild(optEl);
         });
       }
+    }
 
+    function updateTumby() {
+      const sizeSelect = document.getElementById('size-select');
+      const size = sizeSelect.value;
+      updateTumbyForSize(size);
+      // Автоматически выбрать первую тумбу
+      const tumbaSelect = document.getElementById('tumba-select');
+      if (tumbaSelect.options.length > 0) {
+        tumbaSelect.selectedIndex = 0;
+      }
       recalculatePrice();
     }
 
@@ -313,7 +328,6 @@
       document.getElementById('product-price').textContent = total.toLocaleString() + ' ₽';
     }
 
-    // === ВЕРНУТЬСЯ В КАТАЛОГ ===
     function goBack() {
       window.history.back();
     }
