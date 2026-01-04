@@ -5,137 +5,149 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Памятник</title>
   <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #fff;
-      margin: 0;
-      padding: 0;
-      color: #333;
-    }
+  body {
+    font-family: Arial, sans-serif;
+    background: #fff;
+    margin: 0;
+    padding: 0;
+    color: #333;
+  }
+  .container {
+    max-width: 1000px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #fdf6e3; /* светло-бежевый */
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    display: flex;
+    gap: 30px;
+    align-items: flex-start;
+  }
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ddd;
+    width: 100%;
+  }
+  .back-link {
+    text-decoration: none;
+    color: #666;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+  }
+  .back-link:hover {
+    color: #000;
+  }
+  .close-btn {
+    font-size: 24px;
+    color: #666;
+    cursor: pointer;
+    background: none;
+    border: none;
+  }
+
+  /* Левая часть — фото */
+  .product-image {
+    width: 300px;
+    height: 300px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+  .product-image img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
+
+  /* Правая часть — информация */
+  .product-info {
+    flex: 1;
+    min-width: 0; /* чтобы не вылезало за границы */
+  }
+  .product-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0 0 5px 0;
+  }
+  .product-art {
+    font-size: 14px;
+    color: #777;
+    margin: 0 0 15px 0;
+  }
+  .price {
+    font-size: 32px;
+    font-weight: bold;
+    color: #222;
+    margin: 15px 0;
+  }
+  .option-group {
+    margin: 15px 0;
+  }
+  .option-label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 6px;
+    font-size: 14px;
+  }
+  .option-select {
+    width: 30%; /* ← уменьшаем ширину выпадающего списка */
+    max-width: 300px; /* ← ограничиваем максимальную ширину */
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    background: white;
+    transition: border-color 0.2s;
+    font-family: Arial, sans-serif;
+  }
+  .option-select:focus {
+    outline: none;
+    border-color: #007bff;
+  }
+  .order-btn {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    background: #000;
+    color: #e3c445; /* ← цвет текста */
+    border: none;
+    border-radius: 6px;
+    font-size: 18px; /* ← увеличенный шрифт */
+    font-weight: bold;
+    cursor: pointer;
+    text-align: center;
+    margin-top: 20px;
+    transition: background 0.2s;
+    font-family: Arial, sans-serif;
+  }
+  .order-btn:hover {
+    background: #222;
+  }
+
+  @media (max-width: 768px) {
     .container {
-      max-width: 1000px;
-      margin: 20px auto;
-      padding: 20px;
-      background: #fdf6e3; /* светло-бежевый */
-      border-radius: 12px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-    }
-    .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-      padding-bottom: 10px;
-      border-bottom: 1px solid #ddd;
-    }
-    .back-link {
-      text-decoration: none;
-      color: #666;
-      font-size: 14px;
-      display: flex;
-      align-items: center;
-    }
-    .back-link:hover {
-      color: #000;
-    }
-    .close-btn {
-      font-size: 24px;
-      color: #666;
-      cursor: pointer;
-      background: none;
-      border: none;
-    }
-    .product-container {
-      display: flex;
-      gap: 30px;
-      align-items: flex-start;
+      flex-direction: column;
     }
     .product-image {
-      width: 300px;
-      height: 400px;
-      background: #fff;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-    }
-    .product-image img {
-      max-width: 100%;
-      max-height: 100%;
-      object-fit: contain;
-    }
-    .product-info {
-      flex: 1;
-    }
-    .product-title {
-      font-size: 24px;
-      font-weight: bold;
-      margin: 0 0 5px 0;
-    }
-    .product-art {
-      font-size: 14px;
-      color: #777;
-      margin: 0 0 15px 0;
-    }
-    .price {
-      font-size: 32px;
-      font-weight: bold;
-      color: #222;
-      margin: 15px 0;
-    }
-    .option-group {
-      margin: 15px 0;
-    }
-    .option-label {
-      display: block;
-      font-weight: 500;
-      margin-bottom: 6px;
-      font-size: 14px;
+      width: 100%;
+      height: 300px;
     }
     .option-select {
-      width: 100%;
-      padding: 10px 12px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      font-size: 14px;
-      background: white;
-      transition: border-color 0.2s;
+      width: 100%; /* на мобильных — снова на всю ширину */
+      max-width: none;
     }
-    .option-select:focus {
-      outline: none;
-      border-color: #007bff;
-    }
-    .order-btn {
-      display: block;
-      width: 100%;
-      padding: 12px;
-      background: #000;
-      color: #ffd700;
-      border: none;
-      border-radius: 6px;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-      text-align: center;
-      margin-top: 20px;
-      transition: background 0.2s;
-    }
-    .order-btn:hover {
-      background: #222;
-    }
-    @media (max-width: 768px) {
-      .product-container {
-        flex-direction: column;
-      }
-      .product-image {
-        width: 100%;
-        height: 300px;
-      }
-    }
-  </style>
+  }
+</style>
 </head>
 <body>
   <div class="container">
