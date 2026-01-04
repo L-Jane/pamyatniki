@@ -5,149 +5,149 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Памятник</title>
   <style>
-  body {
-    font-family: Arial, sans-serif;
-    background: #fff;
-    margin: 0;
-    padding: 0;
-    color: #333;
-  }
-  .container {
-    max-width: 1000px;
-    margin: 20px auto;
-    padding: 20px;
-    background: #fdf6e3; /* светло-бежевый */
-    border-radius: 12px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-    display: flex;
-    gap: 30px;
-    align-items: flex-start;
-  }
-  .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #ddd;
-    width: 100%;
-  }
-  .back-link {
-    text-decoration: none;
-    color: #666;
-    font-size: 14px;
-    display: flex;
-    align-items: center;
-  }
-  .back-link:hover {
-    color: #000;
-  }
-  .close-btn {
-    font-size: 24px;
-    color: #666;
-    cursor: pointer;
-    background: none;
-    border: none;
-  }
-
-  /* Левая часть — фото */
-  .product-image {
-    width: 300px;
-    height: 300px;
-    background: #fff;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-  }
-  .product-image img {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
-  }
-
-  /* Правая часть — информация */
-  .product-info {
-    flex: 1;
-    min-width: 0; /* чтобы не вылезало за границы */
-  }
-  .product-title {
-    font-size: 24px;
-    font-weight: bold;
-    margin: 0 0 5px 0;
-  }
-  .product-art {
-    font-size: 14px;
-    color: #777;
-    margin: 0 0 15px 0;
-  }
-  .price {
-    font-size: 32px;
-    font-weight: bold;
-    color: #222;
-    margin: 15px 0;
-  }
-  .option-group {
-    margin: 15px 0;
-  }
-  .option-label {
-    display: block;
-    font-weight: 500;
-    margin-bottom: 6px;
-    font-size: 14px;
-  }
-  .option-select {
-    width: 30%; /* ← уменьшаем ширину выпадающего списка */
-    max-width: 300px; /* ← ограничиваем максимальную ширину */
-    padding: 10px 12px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    font-size: 14px;
-    background: white;
-    transition: border-color 0.2s;
-    font-family: Arial, sans-serif;
-  }
-  .option-select:focus {
-    outline: none;
-    border-color: #007bff;
-  }
-  .order-btn {
-    display: block;
-    width: 100%;
-    padding: 12px;
-    background: #000;
-    color: #e3c445; /* ← цвет текста */
-    border: none;
-    border-radius: 6px;
-    font-size: 18px; /* ← увеличенный шрифт */
-    font-weight: bold;
-    cursor: pointer;
-    text-align: center;
-    margin-top: 20px;
-    transition: background 0.2s;
-    font-family: Arial, sans-serif;
-  }
-  .order-btn:hover {
-    background: #222;
-  }
-
-  @media (max-width: 768px) {
-    .container {
-      flex-direction: column;
+    body {
+      font-family: Arial, sans-serif;
+      background: #fff;
+      margin: 0;
+      padding: 0;
+      color: #333;
     }
-    .product-image {
+    .container {
+      max-width: 1000px;
+      margin: 20px auto;
+      padding: 20px;
+      background: #fdf6e3; /* светло-бежевый */
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      display: flex;
+      gap: 30px;
+      align-items: flex-start;
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #ddd;
       width: 100%;
+    }
+    .back-link {
+      text-decoration: none;
+      color: #666;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+    }
+    .back-link:hover {
+      color: #000;
+    }
+    .close-btn {
+      font-size: 24px;
+      color: #666;
+      cursor: pointer;
+      background: none;
+      border: none;
+    }
+
+    /* Левая часть — фото */
+    .product-image {
+      width: 300px;
       height: 300px;
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .product-image img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+
+    /* Правая часть — информация */
+    .product-info {
+      flex: 1;
+      min-width: 0;
+    }
+    .product-title {
+      font-size: 24px;
+      font-weight: bold;
+      margin: 0 0 5px 0;
+    }
+    .product-art {
+      font-size: 14px;
+      color: #777;
+      margin: 0 0 15px 0;
+    }
+    .price {
+      font-size: 32px;
+      font-weight: bold;
+      color: #222;
+      margin: 15px 0;
+    }
+    .option-group {
+      margin: 15px 0;
+    }
+    .option-label {
+      display: block;
+      font-weight: 500;
+      margin-bottom: 6px;
+      font-size: 14px;
     }
     .option-select {
-      width: 100%; /* на мобильных — снова на всю ширину */
-      max-width: none;
+      width: 80%;
+      max-width: 300px;
+      padding: 10px 12px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+      background: white;
+      transition: border-color 0.2s;
+      font-family: Arial, sans-serif;
     }
-  }
-</style>
+    .option-select:focus {
+      outline: none;
+      border-color: #007bff;
+    }
+    .order-btn {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      background: #000;
+      color: #e3c445;
+      border: none;
+      border-radius: 6px;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+      text-align: center;
+      margin-top: 20px;
+      transition: background 0.2s;
+      font-family: Arial, sans-serif;
+    }
+    .order-btn:hover {
+      background: #222;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+      }
+      .product-image {
+        width: 100%;
+        height: 300px;
+      }
+      .option-select {
+        width: 100%;
+        max-width: none;
+      }
+    }
+  </style>
 </head>
 <body>
   <div class="container">
@@ -156,42 +156,41 @@
       <button class="close-btn" onclick="window.close();">×</button>
     </div>
 
-    <div class="product-container">
-      <div class="product-image">
-        <img id="product-img" src="https://via.placeholder.com/300x400?text=Фото+товара" alt="Памятник">
+    <div class="product-image">
+      <img id="product-img" src="https://via.placeholder.com/300x400?text=Фото+товара" alt="Памятник">
+    </div>
+
+    <div class="product-info">
+      <h1 class="product-title" id="product-name">Загрузка...</h1>
+      <div class="product-art" id="product-art">Артикул: ...</div>
+      <div class="price" id="product-price">— ₽</div>
+
+      <div class="option-group">
+        <label class="option-label">Размеры</label>
+        <select class="option-select" id="size-select" onchange="updateTumby()"></select>
       </div>
-      <div class="product-info">
-        <h1 class="product-title" id="product-name">Загрузка...</h1>
-        <div class="product-art" id="product-art">Артикул: ...</div>
-        <div class="price" id="product-price">— ₽</div>
 
-        <div class="option-group">
-          <label class="option-label">Размеры</label>
-          <select class="option-select" id="size-select" onchange="updateTumby()"></select>
-        </div>
-
-        <div class="option-group">
-          <label class="option-label">Тумба</label>
-          <select class="option-select" id="tumba-select" onchange="recalculatePrice()"></select>
-        </div>
-
-        <div class="option-group">
-          <label class="option-label">Цветник</label>
-          <select class="option-select" id="flower-select" onchange="recalculatePrice()"></select>
-        </div>
-
-        <div class="option-group">
-          <label class="option-label">Гравировка Портрет</label>
-          <select class="option-select" id="portrait-select" onchange="recalculatePrice()"></select>
-        </div>
-
-        <div class="option-group">
-          <label class="option-label">Гравировка ФИО+дата</label>
-          <select class="option-select" id="text-select" onchange="recalculatePrice()"></select>
-        </div>
-
-        <button class="order-btn" onclick="alert('Заказ оформлен!')">Заказать в 1 клик</button>
+      <div class="option-group">
+        <label class="option-label">Тумба</label>
+        <select class="option-select" id="tumba-select" onchange="recalculatePrice()"></select>
       </div>
+
+      <div class="option-group">
+        <label class="option-label">Цветник</label>
+        <select class="option-select" id="flower-select" onchange="recalculatePrice()"></select>
+      </div>
+
+      <div class="option-group">
+        <label class="option-label">Гравировка Портрет</label>
+        <select class="option-select" id="portrait-select" onchange="recalculatePrice()"></select>
+      </div>
+
+      <div class="option-group">
+        <label class="option-label">Гравировка ФИО+дата</label>
+        <select class="option-select" id="text-select" onchange="recalculatePrice()"></select>
+      </div>
+
+      <button class="order-btn" onclick="alert('Заказ оформлен!')">Заказать в 1 клик</button>
     </div>
   </div>
 
@@ -289,7 +288,7 @@
       options.forEach(opt => {
         const el = document.createElement('option');
         el.value = JSON.stringify(opt);
-        el.textContent = opt.описание; // ← только описание, без цены
+        el.textContent = opt.описание;
         select.appendChild(el);
       });
     }
