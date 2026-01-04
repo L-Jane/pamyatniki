@@ -12,17 +12,16 @@
       padding: 0;
       color: #333;
     }
-    .container {
+    .page-container {
       max-width: 1000px;
       margin: 20px auto;
       padding: 20px;
       background: #fdf6e3; /* светло-бежевый */
       border-radius: 12px;
       box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-      display: flex;
-      gap: 30px;
-      align-items: flex-start;
     }
+
+    /* ХЕДЕР — отдельная строка */
     .header {
       display: flex;
       justify-content: space-between;
@@ -30,7 +29,6 @@
       margin-bottom: 20px;
       padding-bottom: 10px;
       border-bottom: 1px solid #ddd;
-      width: 100%;
     }
     .back-link {
       text-decoration: none;
@@ -50,7 +48,14 @@
       border: none;
     }
 
-    /* Левая часть — фото */
+    /* ОСНОВНОЙ КОНТЕЙНЕР — под хедером */
+    .main-container {
+      display: flex;
+      gap: 30px;
+      align-items: flex-start;
+    }
+
+    /* ЛЕВАЯ ЧАСТЬ — ФОТО */
     .product-image {
       width: 300px;
       height: 300px;
@@ -69,7 +74,7 @@
       object-fit: contain;
     }
 
-    /* Правая часть — информация */
+    /* ПРАВАЯ ЧАСТЬ — ИНФО */
     .product-info {
       flex: 1;
       min-width: 0;
@@ -135,7 +140,10 @@
     }
 
     @media (max-width: 768px) {
-      .container {
+      .page-container {
+        padding: 15px;
+      }
+      .main-container {
         flex-direction: column;
       }
       .product-image {
@@ -150,47 +158,53 @@
   </style>
 </head>
 <body>
-  <div class="container">
+  <div class="page-container">
+    <!-- ХЕДЕР -->
     <div class="header">
       <a href="#" class="back-link" onclick="goBack(); return false;">← Вернуться в каталог</a>
       <button class="close-btn" onclick="window.close();">×</button>
     </div>
 
-    <div class="product-image">
-      <img id="product-img" src="https://via.placeholder.com/300x400?text=Фото+товара" alt="Памятник">
-    </div>
-
-    <div class="product-info">
-      <h1 class="product-title" id="product-name">Загрузка...</h1>
-      <div class="product-art" id="product-art">Артикул: ...</div>
-      <div class="price" id="product-price">— ₽</div>
-
-      <div class="option-group">
-        <label class="option-label">Размеры</label>
-        <select class="option-select" id="size-select" onchange="updateTumby()"></select>
+    <!-- ОСНОВНОЙ КОНТЕЙНЕР -->
+    <div class="main-container">
+      <!-- ЛЕВАЯ ЧАСТЬ — ФОТО -->
+      <div class="product-image">
+        <img id="product-img" src="https://via.placeholder.com/300x400?text=Фото+товара" alt="Памятник">
       </div>
 
-      <div class="option-group">
-        <label class="option-label">Тумба</label>
-        <select class="option-select" id="tumba-select" onchange="recalculatePrice()"></select>
-      </div>
+      <!-- ПРАВАЯ ЧАСТЬ — ИНФО -->
+      <div class="product-info">
+        <h1 class="product-title" id="product-name">Загрузка...</h1>
+        <div class="product-art" id="product-art">Артикул: ...</div>
+        <div class="price" id="product-price">— ₽</div>
 
-      <div class="option-group">
-        <label class="option-label">Цветник</label>
-        <select class="option-select" id="flower-select" onchange="recalculatePrice()"></select>
-      </div>
+        <div class="option-group">
+          <label class="option-label">Размеры</label>
+          <select class="option-select" id="size-select" onchange="updateTumby()"></select>
+        </div>
 
-      <div class="option-group">
-        <label class="option-label">Гравировка Портрет</label>
-        <select class="option-select" id="portrait-select" onchange="recalculatePrice()"></select>
-      </div>
+        <div class="option-group">
+          <label class="option-label">Тумба</label>
+          <select class="option-select" id="tumba-select" onchange="recalculatePrice()"></select>
+        </div>
 
-      <div class="option-group">
-        <label class="option-label">Гравировка ФИО+дата</label>
-        <select class="option-select" id="text-select" onchange="recalculatePrice()"></select>
-      </div>
+        <div class="option-group">
+          <label class="option-label">Цветник</label>
+          <select class="option-select" id="flower-select" onchange="recalculatePrice()"></select>
+        </div>
 
-      <button class="order-btn" onclick="alert('Заказ оформлен!')">Заказать в 1 клик</button>
+        <div class="option-group">
+          <label class="option-label">Гравировка Портрет</label>
+          <select class="option-select" id="portrait-select" onchange="recalculatePrice()"></select>
+        </div>
+
+        <div class="option-group">
+          <label class="option-label">Гравировка ФИО+дата</label>
+          <select class="option-select" id="text-select" onchange="recalculatePrice()"></select>
+        </div>
+
+        <button class="order-btn" onclick="alert('Заказ оформлен!')">Заказать в 1 клик</button>
+      </div>
     </div>
   </div>
 
