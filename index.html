@@ -263,9 +263,9 @@
       }
 
       // Заполняем остальные списки (без цен в описании)
-      fillSelect('flower-select', currentProduct.flowerbeds, '-- Без цветника --');
-      fillSelect('portrait-select', currentProduct.portraits, '-- Без портрета --');
-      fillSelect('text-select', currentProduct.texts, '-- Без надписи --');
+      fillSelect('flower-select', currentProduct.flowerbeds, '-- Выберите цветник --');
+      fillSelect('portrait-select', currentProduct.portraits, '-- Выберите портрет --');
+      fillSelect('text-select', currentProduct.texts, '-- Выберите подпись --');
 
       // Пересчитываем цену
       recalculatePrice();
@@ -289,7 +289,7 @@
         currentProduct.sizesBases[size].forEach(opt => {
           const optEl = document.createElement('option');
           optEl.value = JSON.stringify({size, tumba: opt.тумба, price: opt.цена});
-          optEl.textContent = opt.тумба + ' (' + opt.цена.toLocaleString() + ' ₽)';
+          optEl.textContent = opt.тумба;
           tumbaSelect.appendChild(optEl);
         });
       }
