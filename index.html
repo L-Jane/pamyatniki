@@ -3,140 +3,319 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Каталог памятников</title>
+  <title>Памятник</title>
   <style>
-    body { font-family: Arial, sans-serif; max-width: 900px; margin: 20px auto; padding: 0 10px; }
-    .product { border: 1px solid #ddd; padding: 16px; margin: 16px 0; border-radius: 8px; background: #fff; }
-    h2 { text-align: center; }
-    label { display: block; margin: 12px 0 6px; font-weight: bold; }
-    select, .price-box {
-      width: 100%; padding: 8px; margin: 4px 0; border: 1px solid #ccc; border-radius: 4px;
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #fff;
+      margin: 0;
+      padding: 0;
+      color: #333;
     }
-    .price-box {
-      background: #e8f5e9; font-weight: bold; text-align: center; font-size: 18px; color: #2e7d32;
+    .container {
+      max-width: 1000px;
+      margin: 20px auto;
+      padding: 20px;
+      background: #fdf6e3; /* светло-бежевый */
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #ddd;
+    }
+    .back-link {
+      text-decoration: none;
+      color: #666;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+    }
+    .back-link:hover {
+      color: #000;
+    }
+    .close-btn {
+      font-size: 24px;
+      color: #666;
+      cursor: pointer;
+      background: none;
+      border: none;
+    }
+    .product-container {
+      display: flex;
+      gap: 30px;
+      align-items: flex-start;
+    }
+    .product-image {
+      width: 300px;
+      height: 400px;
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .product-image img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+    .product-info {
+      flex: 1;
+    }
+    .product-title {
+      font-size: 24px;
+      font-weight: bold;
+      margin: 0 0 5px 0;
+    }
+    .product-art {
+      font-size: 14px;
+      color: #777;
+      margin: 0 0 15px 0;
+    }
+    .price {
+      font-size: 32px;
+      font-weight: bold;
+      color: #222;
+      margin: 15px 0;
+    }
+    .option-group {
+      margin: 15px 0;
+    }
+    .option-label {
+      display: block;
+      font-weight: 500;
+      margin-bottom: 6px;
+      font-size: 14px;
+    }
+    .option-select {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+      background: white;
+      transition: border-color 0.2s;
+    }
+    .option-select:focus {
+      outline: none;
+      border-color: #007bff;
+    }
+    .order-btn {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      background: #000;
+      color: #ffd700;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      text-align: center;
+      margin-top: 20px;
+      transition: background 0.2s;
+    }
+    .order-btn:hover {
+      background: #222;
+    }
+    @media (max-width: 768px) {
+      .product-container {
+        flex-direction: column;
+      }
+      .product-image {
+        width: 100%;
+        height: 300px;
+      }
     }
   </style>
 </head>
 <body>
-  <h2>Каталог памятников</h2>
-  <div id="catalog">Загрузка...</div>
+  <div class="container">
+    <div class="header">
+      <a href="#" class="back-link" onclick="goBack(); return false;">← Вернуться в каталог</a>
+      <button class="close-btn" onclick="window.close();">×</button>
+    </div>
+
+    <div class="product-container">
+      <div class="product-image">
+        <img id="product-img" src="https://via.placeholder.com/300x400?text=Фото+товара" alt="Памятник">
+      </div>
+      <div class="product-info">
+        <h1 class="product-title" id="product-name">Загрузка...</h1>
+        <div class="product-art" id="product-art">Артикул: ...</div>
+        <div class="price" id="product-price">— ₽</div>
+
+        <div class="option-group">
+          <label class="option-label">Размеры</label>
+          <select class="option-select" id="size-select" onchange="updateTumby()"></select>
+        </div>
+
+        <div class="option-group">
+          <label class="option-label">Тумба</label>
+          <select class="option-select" id="tumba-select" onchange="recalculatePrice()"></select>
+        </div>
+
+        <div class="option-group">
+          <label class="option-label">Цветник</label>
+          <select class="option-select" id="flower-select" onchange="recalculatePrice()"></select>
+        </div>
+
+        <div class="option-group">
+          <label class="option-label">Гравировка Портрет</label>
+          <select class="option-select" id="portrait-select" onchange="recalculatePrice()"></select>
+        </div>
+
+        <div class="option-group">
+          <label class="option-label">Гравировка ФИО+дата</label>
+          <select class="option-select" id="text-select" onchange="recalculatePrice()"></select>
+        </div>
+
+        <button class="order-btn" onclick="alert('Заказ оформлен!')">Заказать в 1 клик</button>
+      </div>
+    </div>
+  </div>
 
   <script>
-    // Загружаем товары из JSON-файла
+    // === ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ ===
+    let PRODUCTS = [];
+    let currentProduct = null;
+
+    // === ЗАГРУЗКА ДАННЫХ ===
     fetch('products.json')
       .then(response => response.json())
-      .then(PRODUCTS => {
-        let html = '';
-        PRODUCTS.forEach(p => {
-          html += `
-            <div class="product" data-id="${p.id}">
-              <h3>${p.id} — ${p.name}</h3>
-              <label>Размер:</label>
-              <select class="sel-size" onchange="updateTumby(this)"></select>
-              <label>Тумба:</label>
-              <select class="sel-tumba" onchange="recalculatePrice('${p.id}')"></select>
-              <label>Цветник:</label>
-              <select class="sel-flower" onchange="recalculatePrice('${p.id}')"></select>
-              <label>Портреты:</label>
-              <select class="sel-portrait" onchange="recalculatePrice('${p.id}')"></select>
-              <label>ФИО + дата:</label>
-              <select class="sel-text" onchange="recalculatePrice('${p.id}')"></select>
-              <div class="price-box" id="price-${p.id}">Выберите параметры</div>
-            </div>
-          `;
-        });
-        document.getElementById('catalog').innerHTML = html;
+      .then(data => {
+        PRODUCTS = data;
+        const urlParams = new URLSearchParams(window.location.search);
+        const productId = urlParams.get('id');
+        
+        if (!productId) {
+          document.getElementById('product-name').textContent = "Товар не найден";
+          return;
+        }
 
-        // Инициализация списков
-        PRODUCTS.forEach(p => {
-          const div = document.querySelector(`[data-id="${p.id}"]`);
-          if (!div) return;
-          
-          const sizeSelect = div.querySelector('.sel-size');
-          sizeSelect.innerHTML = '<option value="">–</option>';
-          Object.keys(p.sizesBases).forEach(size => {
-            const opt = document.createElement('option');
-            opt.value = size;
-            opt.textContent = size;
-            sizeSelect.appendChild(opt);
-          });
-          
-          const flowerSelect = div.querySelector('.sel-flower');
-          flowerSelect.innerHTML = '<option value="">Без цветника</option>';
-          p.flowerbeds.forEach(opt => {
-            const el = document.createElement('option');
-            el.value = JSON.stringify(opt);
-            el.textContent = opt.описание + ' (+' + opt.доплата.toLocaleString() + ' ₽)';
-            flowerSelect.appendChild(el);
-          });
-          
-          const portraitSelect = div.querySelector('.sel-portrait');
-          portraitSelect.innerHTML = '<option value="">Без портретов</option>';
-          p.portraits.forEach(opt => {
-            const el = document.createElement('option');
-            el.value = JSON.stringify(opt);
-            el.textContent = opt.описание + ' (+' + opt.доплата.toLocaleString() + ' ₽)';
-            portraitSelect.appendChild(el);
-          });
-          
-          const textSelect = div.querySelector('.sel-text');
-          textSelect.innerHTML = '<option value="">Без надписей</option>';
-          p.texts.forEach(opt => {
-            const el = document.createElement('option');
-            el.value = JSON.stringify(opt);
-            el.textContent = opt.описание + ' (+' + opt.доплата.toLocaleString() + ' ₽)';
-            textSelect.appendChild(el);
-          });
-        });
+        currentProduct = PRODUCTS.find(p => p.id === productId);
+        if (!currentProduct) {
+          document.getElementById('product-name').textContent = "Товар не найден";
+          return;
+        }
+
+        renderProduct();
       })
       .catch(err => {
-        document.getElementById('catalog').innerHTML = '<p>Ошибка загрузки каталога</p>';
-        console.error(err);
+        console.error("Ошибка загрузки данных:", err);
+        document.getElementById('product-name').textContent = "Ошибка загрузки";
       });
 
-    // === ФУНКЦИИ ЛОГИКИ ===
-    function updateTumby(sizeSelect) {
-      const productDiv = sizeSelect.closest('.product');
-      const productId = productDiv.dataset.id;
-      fetch('products.json')
-        .then(r => r.json())
-        .then(PRODUCTS => {
-          const product = PRODUCTS.find(p => p.id === productId);
-          const size = sizeSelect.value;
-          const tumbaSelect = productDiv.querySelector('.sel-tumba');
-          tumbaSelect.innerHTML = '<option value="">–</option>';
-          if (size && product.sizesBases[size]) {
-            product.sizesBases[size].forEach(opt => {
-              const optEl = document.createElement('option');
-              optEl.value = JSON.stringify({size, tumba: opt.тумба, price: opt.цена});
-              optEl.textContent = opt.тумба + ' (' + opt.цена.toLocaleString() + ' ₽)';
-              tumbaSelect.appendChild(optEl);
-            });
-          }
-          recalculatePrice(productId);
-        });
+    // === ОТОБРАЖЕНИЕ ТОВАРА ===
+    function renderProduct() {
+      document.getElementById('product-name').textContent = currentProduct.name;
+      document.getElementById('product-art').textContent = "Артикул: " + currentProduct.id;
+
+      // Установим фото (если есть)
+      if (currentProduct.image) {
+        document.getElementById('product-img').src = currentProduct.image;
+      } else {
+        // Заглушка — можно заменить на реальные фото позже
+        document.getElementById('product-img').src = "https://via.placeholder.com/300x400?text=" + encodeURIComponent(currentProduct.name);
+      }
+
+      // Заполняем размеры
+      const sizeSelect = document.getElementById('size-select');
+      sizeSelect.innerHTML = '<option value="">-- Выберите размер --</option>';
+      Object.keys(currentProduct.sizesBases).forEach(size => {
+        const opt = document.createElement('option');
+        opt.value = size;
+        opt.textContent = size;
+        sizeSelect.appendChild(opt);
+      });
+
+      // Цветники
+      const flowerSelect = document.getElementById('flower-select');
+      flowerSelect.innerHTML = '<option value="">-- Без цветника --</option>';
+      currentProduct.flowerbeds.forEach(opt => {
+        const el = document.createElement('option');
+        el.value = JSON.stringify(opt);
+        el.textContent = opt.описание + ' (+' + opt.доплата.toLocaleString() + ' ₽)';
+        flowerSelect.appendChild(el);
+      });
+
+      // Портреты
+      const portraitSelect = document.getElementById('portrait-select');
+      portraitSelect.innerHTML = '<option value="">-- Портрет --</option>';
+      currentProduct.portraits.forEach(opt => {
+        const el = document.createElement('option');
+        el.value = JSON.stringify(opt);
+        el.textContent = opt.описание + ' (+' + opt.доплата.toLocaleString() + ' ₽)';
+        portraitSelect.appendChild(el);
+      });
+
+      // ФИО+дата
+      const textSelect = document.getElementById('text-select');
+      textSelect.innerHTML = '<option value="">-- ФИО+Дата --</option>';
+      currentProduct.texts.forEach(opt => {
+        const el = document.createElement('option');
+        el.value = JSON.stringify(opt);
+        el.textContent = opt.описание + ' (+' + opt.доплата.toLocaleString() + ' ₽)';
+        textSelect.appendChild(el);
+      });
+
+      // Сбрасываем тумбу и цену
+      document.getElementById('tumba-select').innerHTML = '<option value="">-- Выберите размер --</option>';
+      document.getElementById('product-price').textContent = '— ₽';
     }
 
-    function recalculatePrice(productId) {
-      const productDiv = document.querySelector(`[data-id="${productId}"]`);
-      const tumbaVal = productDiv.querySelector('.sel-tumba').value;
-      const flowerVal = productDiv.querySelector('.sel-flower').value;
-      const portraitVal = productDiv.querySelector('.sel-portrait').value;
-      const textVal = productDiv.querySelector('.sel-text').value;
-      
+    // === ЛОГИКА ВЫБОРА ===
+    function updateTumby() {
+      const sizeSelect = document.getElementById('size-select');
+      const tumbaSelect = document.getElementById('tumba-select');
+      const size = sizeSelect.value;
+
+      tumbaSelect.innerHTML = '<option value="">-- Выберите тумбу --</option>';
+
+      if (size && currentProduct.sizesBases[size]) {
+        currentProduct.sizesBases[size].forEach(opt => {
+          const optEl = document.createElement('option');
+          optEl.value = JSON.stringify({size, tumba: opt.тумба, price: opt.цена});
+          optEl.textContent = opt.тумба + ' (' + opt.цена.toLocaleString() + ' ₽)';
+          tumbaSelect.appendChild(optEl);
+        });
+      }
+
+      recalculatePrice();
+    }
+
+    function recalculatePrice() {
+      const tumbaVal = document.getElementById('tumba-select').value;
+      const flowerVal = document.getElementById('flower-select').value;
+      const portraitVal = document.getElementById('portrait-select').value;
+      const textVal = document.getElementById('text-select').value;
+
       if (!tumbaVal) {
-        document.getElementById('price-' + productId).textContent = 'Выберите параметры';
+        document.getElementById('product-price').textContent = '— ₽';
         return;
       }
-      
+
       const base = JSON.parse(tumbaVal);
       let total = base.price;
+
       if (flowerVal) total += JSON.parse(flowerVal).доплата;
       if (portraitVal) total += JSON.parse(portraitVal).доплата;
       if (textVal) total += JSON.parse(textVal).доплата;
-      
-      document.getElementById('price-' + productId).textContent = 
-        'Итого: ' + total.toLocaleString() + ' ₽';
+
+      document.getElementById('product-price').textContent = total.toLocaleString() + ' ₽';
+    }
+
+    // === ВЕРНУТЬСЯ В КАТАЛОГ ===
+    function goBack() {
+      window.history.back();
     }
   </script>
 </body>
